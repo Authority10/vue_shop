@@ -1,0 +1,72 @@
+{
+  "id": "2255820",
+  "name": "电商后台",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "8776631",
+      "name": "view",
+      "font_class": "icon-test1",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "8776676",
+      "name": "view_off",
+      "font_class": "icon-test2",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "8776785",
+      "name": "order_unread",
+      "font_class": "icon-test3",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "8776878",
+      "name": "download",
+      "font_class": "icon-test4",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "8777038",
+      "name": "lock",
+      "font_class": "icon-test5",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "8777078",
+      "name": "flow",
+      "font_class": "icon-test6",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "8777080",
+      "name": "filter",
+      "font_class": "icon-test7",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "8777131",
+      "name": "calculator",
+      "font_class": "icon-test8",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "8776784",
+      "name": "order",
+      "font_class": "icon-test",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    }
+  ]
+}
