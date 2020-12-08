@@ -6,32 +6,25 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "8776631",
-      "name": "view",
-      "font_class": "icon-test1",
-      "unicode": "e633",
-      "unicode_decimal": 58931
+      "icon_id": "8776823",
+      "name": "cart",
+      "font_class": "icon-test9",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
     },
     {
-      "icon_id": "8776676",
-      "name": "view_off",
-      "font_class": "icon-test2",
-      "unicode": "e634",
-      "unicode_decimal": 58932
+      "icon_id": "8777250",
+      "name": "user",
+      "font_class": "icon-test10",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
     },
     {
-      "icon_id": "8776785",
-      "name": "order_unread",
-      "font_class": "icon-test3",
-      "unicode": "e63b",
-      "unicode_decimal": 58939
-    },
-    {
-      "icon_id": "8776878",
-      "name": "download",
-      "font_class": "icon-test4",
-      "unicode": "e640",
-      "unicode_decimal": 58944
+      "icon_id": "8777252",
+      "name": "sub_account",
+      "font_class": "icon-test11",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
     },
     {
       "icon_id": "8777038",
@@ -39,13 +32,6 @@
       "font_class": "icon-test5",
       "unicode": "e644",
       "unicode_decimal": 58948
-    },
-    {
-      "icon_id": "8777078",
-      "name": "flow",
-      "font_class": "icon-test6",
-      "unicode": "e646",
-      "unicode_decimal": 58950
     },
     {
       "icon_id": "8777080",

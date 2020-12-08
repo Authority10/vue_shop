@@ -10,7 +10,9 @@
          <!--账号-->
          <el-form-item prop="username">
            <!--element-ui库自带的icon或者第三方iconfont-->
-           <el-input v-model="loginForm.username" prefix-icon="iconfont icon-icon-test6"></el-input>
+           <el-input
+                   v-model="loginForm.username"
+                   prefix-icon="iconfont icon-icon-test10"></el-input>
          </el-form-item>
          <!--密码-->
          <el-form-item prop="password">
