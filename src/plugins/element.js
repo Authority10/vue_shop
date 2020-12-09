@@ -12,7 +12,18 @@ import {
   Menu,
   Submenu,
   MenuItemGroup,
-  MenuItem} from 'element-ui'
+  MenuItem,
+  Breadcrumb,
+  BreadcrumbItem,
+  Card,
+  Row,
+  Col,
+  Table,
+  TableColumn,
+  Switch,
+  Tooltip,
+  Pagination,
+  Dialog} from 'element-ui'
 
 Vue.use(Button)
     .use(Form)
@@ -26,5 +37,16 @@ Vue.use(Button)
     .use(Submenu)
     .use(MenuItemGroup)
     .use(MenuItem)
+    .use(Breadcrumb)
+    .use(BreadcrumbItem)
+    .use(Card)
+    .use(Row)
+    .use(Col)
+    .use(Table)
+    .use(TableColumn)
+    .use(Switch)
+    .use(Tooltip)
+    .use(Pagination)
+    .use(Dialog)
 //Message的导入不同，必须挂载到vue原型上
 Vue.prototype.$message = Message

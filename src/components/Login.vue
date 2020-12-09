@@ -70,14 +70,13 @@
           const { data : res} = await this.$http.post('/login',this.loginForm);
           // console.log(res);
           if(res.meta.status !== 200){
-            this.$message.error('登录失败')
+            return this.$message.error('登录失败')
           }
           this.$message.success('登录成功');
           //将服务器返回的token保存到sessionStorage
           window.sessionStorage.setItem('token',res.data.token);
           //跳转路由进入到home界面
           this.$router.push('/home')
-
 
           //1.将登陆成功之后服务器返回的token保存到客户端的sessionStorage中
               //1.1 只有登录成功之后拿到token才有资格访问其他接口

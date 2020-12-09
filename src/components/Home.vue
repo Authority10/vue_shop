@@ -20,7 +20,9 @@
                 active-text-color="#409EFF"
                 unique-opened
                 :collapse="isCollapse"
-                :collapse-transition="false">
+                :collapse-transition="false"
+                router
+                :default-active="activePath">
           <!--一级菜单-->
           <el-submenu :index="item.id.toString()" v-for="(item,index) in menuslist" :key="item.id">
             <!--一级菜单的模板区域-->
@@ -29,7 +31,11 @@
               <span>{{item.authName}}</span>
             </template>
             <!--二级菜单-->
-            <el-menu-item :index="subItem.id.toString()" v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item
+                    :index="'/' + subItem.path"
+                    v-for="subItem in item.children"
+                    :key="subItem.id"
+                    @click="saveNavState('/' + subItem.path)">
               <!--二级菜单的模板区域-->
               <template slot="title">
                 <i class="el-icon-menu"></i>
@@ -37,11 +43,12 @@
               </template>
             </el-menu-item>
           </el-submenu>
-
         </el-menu>
       </el-aside>
       <!--右侧内容主体-->
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -51,7 +58,9 @@
     name: "Home",
     data(){
       return{
+        //左侧菜单栏数据
         menuslist:[],
+        //二级菜单的图标
         icons:[
           'iconfont icon-icon-test11',
           'iconfont icon-icon-test5',
@@ -61,16 +70,23 @@
         ],
         //左侧导航栏是否为折叠，默认是不折叠
         isCollapse:false,
+        //被激活的二级菜单路径
+        activePath:''
       }
     },
     created() {
-      this.getMenuList()
+      //获取左侧菜单栏数据
+      this.getMenuList();
+      //获取被激活的二级菜单路径
+      this.activePath = window.sessionStorage.getItem('activePath')
     },
     methods:{
+      //退出功能
       quit(){
         window.sessionStorage.clear()
         this.$router.push('/login')
       },
+      //获取左侧菜单栏数据
       async getMenuList(){
        const {data:res} =await this.$http.get('/menus');
        if(res.meta.status!==200){
@@ -78,8 +94,15 @@
        }
        this.menuslist = res.data
       },
+      //点击按钮切换左侧菜单栏的折叠与展开
       toggleCollapse(){
         this.isCollapse = !this.isCollapse
+      },
+      //保存当前活跃路由到sessionStorage
+      saveNavState(activePath){
+        // console.log(this.$route);
+        window.sessionStorage.setItem('activePath',activePath);
+        this.activePath = activePath
       }
     }
   }
@@ -110,7 +133,7 @@
   }
   .el-aside {
     background-color: #333744;
-    >el-menu {
+    >.el-menu {
       border-right: none ;
     }
   }
