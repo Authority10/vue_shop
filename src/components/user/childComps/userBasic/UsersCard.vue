@@ -20,7 +20,7 @@
             style="width: 100%"
             border
             stripe>
-      <el-table-column label="#" type="index"></el-table-column>
+      <el-table-column label="#"    type="index"></el-table-column>
       <el-table-column label="名称" prop="username"></el-table-column>
       <el-table-column label="邮箱" prop="email"></el-table-column>
       <el-table-column label="电话" prop="mobile"></el-table-column>
@@ -31,9 +31,9 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" >
-        <template v-slot="operation">
-          <el-button type="primary" icon="el-icon-edit"></el-button>
-          <el-button type="danger" icon="el-icon-delete"></el-button>
+        <template v-slot="user">
+          <el-button type="primary" icon="el-icon-edit" @click="ShowEditUser(user.row.id)"></el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="RemoveUserById(user.row.id)"></el-button>
           <el-tooltip effect="dark" content="分配角色" placement="top-start" :enterable="false">
             <el-button type="warning" icon="el-icon-setting"></el-button>
           </el-tooltip>
@@ -50,12 +50,12 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="total">
     </el-pagination>
+    <edit-user ref="EditUser" :editFormProps="editForm" @editUserInfo="refreshUsers"></edit-user>
   </el-card>
 </template>
 
 <script>
-
-
+  import EditUser from "../userOperation/EditUser";
   export default {
     name: "UsersCard",
     data(){
@@ -73,8 +73,13 @@
         //用户数量总数
         total:0,
         //控制添加用户的弹出框是否隐藏
-        addDialogVisible:false
+        addDialogVisible:false,
+        //使用id获取的最新用户信息
+        editForm:{}
       }
+    },
+    components:{
+      EditUser
     },
     created() {
       this.getUserList()
@@ -125,9 +130,49 @@
         this.queryInfo.pagenum = 1;
         this.getUserList()
       },
-      //
+      //子传父发射事件，点击了'添加用户按钮'，
       changeDialogVisible(){
         this.$emit('changeVisible')
+      },
+      //打开用户操作的编辑对话框
+      async ShowEditUser(id){
+        // console.log(this.$refs.EditUser)
+        // EditDialogVisible的前面不需要加data
+        // console.log(id);
+        this.$refs.EditUser.editDialogVisible = true;
+        const {data:res} = await this.$http.get(`users/${id}`);
+        // console.log(res)
+        if(res.meta.status!==200){
+          return this.$message.error('获取用户信息失败')
+        }
+        this.editForm = res.data
+      },
+      //接受到子组件的'确定修改用户信息'事件，更新用户列表
+      refreshUsers(){
+        this.getUserList()
+      },
+      //根据用户id删除用户
+      async RemoveUserById(id){
+        const confirmResult = await this.$confirm(
+            '此操作将永久删除该用户, 是否继续?',
+            '提示',
+            {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+            })
+            .catch(err => err );
+        // console.log(confirmResult)
+        if(confirmResult!=='confirm'){
+          this.$message.info('已取消删除')
+        }
+        const {data:res} = await this.$http.delete('users/' + id);
+        // console.log(res)
+        if(res.meta.status!==200){
+          return this.$message.error('删除用户失败！')
+        }
+        this.$message.success('删除用户成功')
+        this.getUserList()
       }
     }
   }

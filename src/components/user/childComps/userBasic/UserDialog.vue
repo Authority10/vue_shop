@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加用户" :visible.sync="isDialogVisible" width="50%">
+  <el-dialog title="添加用户" :visible.sync="isDialogVisible" width="50%" @close="addDialogClosed">
     <el-form ref="addFormRef" :model="addForm" :rules="addFormRules" label-width="70px">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="addForm.username"></el-input>
@@ -16,7 +16,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
         <el-button @click="isDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="isDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="addUser">确 定</el-button>
       </span>
   </el-dialog>
 </template>
@@ -73,7 +73,29 @@
       }
     },
     methods:{
-
+      addDialogClosed(){
+        this.$refs.addFormRef.resetFields()
+      },
+      addUser(){
+        this.$refs.addFormRef.validate(async (valid)=>{
+          if(!valid){
+            return this.$message.error('请输入正确格式')
+          }
+          const {data:res} = await this.$http.post('users',this.addForm)
+          // console.log(res)
+          // 创建失败立即返回错误提示跳出函数
+          if(res.meta.status!==201){
+            return this.$message.error('创建用户失败')
+          }
+          //下面3步都是成功之后的操作
+          //创建成功之后提示成功
+          this.$message.success('创建用户成功');
+          //关闭对话框
+          this.isDialogVisible = false;
+          //重新向服务器发起请求获取创建用户之后的最新数据(子传父，发射事件)
+          this.$emit('refreshNewUser')
+        })
+      }
     }
   }
 </script>
