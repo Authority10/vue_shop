@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--面包屑导航-->
-    <users-breadcrumb></users-breadcrumb>
+    <users-breadcrumb :bread-crumb-list="['用户管理','用户列表']"></users-breadcrumb>
     <!--卡片视图区域-->
     <users-card ref="userCard" @changeVisible="changeVisible" ></users-card>
     <!--添加用户的弹出框-->
