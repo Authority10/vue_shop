@@ -26,7 +26,9 @@ import {
   Dialog,
   MessageBox,
   Tag,
-  Tree} from 'element-ui'
+  Tree,
+  Select,
+  Option} from 'element-ui'
 
 Vue.use(Button)
     .use(Form)
@@ -53,6 +55,8 @@ Vue.use(Button)
     .use(Dialog)
     .use(Tag)
     .use(Tree)
+    .use(Select)
+    .use(Option)
 //Message的导入不同，必须挂载到vue原型上
 Vue.prototype.$message = Message;
 Vue.prototype.$confirm = MessageBox.confirm;

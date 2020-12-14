@@ -32,10 +32,14 @@
       </el-table-column>
       <el-table-column label="操作" >
         <template v-slot="user">
-          <el-button type="primary" icon="el-icon-edit" @click="ShowEditUser(user.row.id)"></el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="RemoveUserById(user.row.id)"></el-button>
+          <el-tooltip effect="dark" content="编辑" placement="top-start" :enterable="false">
+            <el-button type="primary" icon="el-icon-edit" @click="ShowEditUser(user.row.id)"></el-button>
+          </el-tooltip>
+          <el-tooltip effect="dark" content="删除" placement="top-start" :enterable="false">
+            <el-button type="danger" icon="el-icon-delete" @click="RemoveUserById(user.row.id)"></el-button>
+          </el-tooltip>
           <el-tooltip effect="dark" content="分配角色" placement="top-start" :enterable="false">
-            <el-button type="warning" icon="el-icon-setting"></el-button>
+            <el-button type="warning" icon="el-icon-setting" @click="setRole(user.row)"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -51,11 +55,13 @@
             :total="total">
     </el-pagination>
     <edit-user ref="EditUser" :editFormProps="editForm" @editUserInfo="refreshUsers"></edit-user>
+    <set-role ref="SetRole" @refreshUserList="refreshUsers"></set-role>
   </el-card>
 </template>
 
 <script>
   import EditUser from "../userOperation/EditUser";
+  import SetRole from "../userOperation/SetRole";
   export default {
     name: "UsersCard",
     data(){
@@ -79,7 +85,8 @@
       }
     },
     components:{
-      EditUser
+      EditUser,
+      SetRole
     },
     created() {
       this.getUserList()
@@ -147,7 +154,8 @@
         }
         this.editForm = res.data
       },
-      //接受到子组件的'确定修改用户信息'事件，更新用户列表
+      //接受到子组件的'确定修改用户信息'事件，更新用户列表 <edit-user>组件
+      //接受到子组件的'确定分配角色'事件，更新用户列表   <set-role>组件
       refreshUsers(){
         this.getUserList()
       },
@@ -173,6 +181,21 @@
         }
         this.$message.success('删除用户成功')
         this.getUserList()
+      },
+      //点击'分配角色'
+      async setRole(currRole){
+        //当前分配角色的用户是谁？传递给<set-role>子组件
+        this.$refs.SetRole.currentRole = currRole;
+        //获取角色列表
+        const {data:res} = await this.$http.get('roles');
+        // console.log(res);
+        if(res.meta.status!==200){
+          return this.$message.error('获取角色列表失败！')
+        }
+        //将角色列表传递给<set-role>子组件
+        this.$refs.SetRole.rolesList = res.data;
+        //显示'分配角色'对话框
+        this.$refs.SetRole.setRoleDialogVisible = true;
       }
     }
   }

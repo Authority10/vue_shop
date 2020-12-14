@@ -39,6 +39,7 @@
                        <el-tag type="warning"
                                :class="[i3===0 ? '' : 'bdtop' ]"
                                v-for="(item3,i3) in item2.children"
+                               :key="item3.id"
                                closable
                                @close="removeRightById(rights.row,item3.id)">
                          {{item3.authName}}
@@ -144,6 +145,7 @@
         //获取点击'分配权限'的角色,传给子组件
         this.$refs.RightsDialog.roleToSetRight = role;
         //调用子组件方法，获取当前'分配权限'用户的已有权限
+        //使用props+watch方法会出现bug，点击同一个人的分配权限清空之后props不会传值
         this.$refs.RightsDialog.getRoleRight();
 
         //修改子组件SetRightsDialogVisible，弹出对话框
