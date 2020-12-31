@@ -29,7 +29,10 @@ import {
   Tree,
   Select,
   Option,
-  Cascader} from 'element-ui'
+  Cascader,
+  Alert,
+  Tabs,
+  TabPane} from 'element-ui'
 
 Vue.use(Button)
     .use(Form)
@@ -59,6 +62,9 @@ Vue.use(Button)
     .use(Select)
     .use(Option)
     .use(Cascader)
+    .use(Alert)
+    .use(Tabs)
+    .use(TabPane)
 //Message的导入不同，必须挂载到vue原型上
 Vue.prototype.$message = Message;
 Vue.prototype.$confirm = MessageBox.confirm;

@@ -159,6 +159,7 @@
         },
         //级联选择器的双向绑定
         selectedKeys:[],
+        //'编辑'对话框中表单数据的双向绑定
         editCateForm:{
           cat_name:'',
           cat_id:'',
@@ -172,7 +173,7 @@
       //获取商品列表
       async getCateList(){
         const {data:res} = await this.$http.get('categories',{params:this.queryInfo})
-        // console.log(res)
+        console.log(res)
         if(res.meta.status!==200){
           return this.$message.error('获取商品列表失败')
         }
