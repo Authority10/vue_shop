@@ -60,9 +60,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="goodDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="addCate">确 定</el-button>
-  </span>
+        <el-button @click="goodDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addCate">确 定</el-button>
+      </span>
     </el-dialog>
     <el-dialog
             title="添加分类"
@@ -75,9 +75,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="editDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="editCate">确 定</el-button>
-  </span>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editCate">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -172,8 +172,8 @@
     methods:{
       //获取商品列表
       async getCateList(){
-        const {data:res} = await this.$http.get('categories',{params:this.queryInfo})
-        console.log(res)
+        const {data:res} = await this.$http.get('categories',{params:this.queryInfo});
+        console.log(res);
         if(res.meta.status!==200){
           return this.$message.error('获取商品列表失败')
         }
