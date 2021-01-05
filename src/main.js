@@ -24,6 +24,21 @@ Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 Vue.component('tree-table',TreeTable)
 
+//全局过滤器
+Vue.filter('dataFormat',function (originValue) {
+  const dt = new Date(originValue);
+
+  const year = dt.getFullYear();
+  const month = (dt.getMonth() +1+"").padStart(2,'0');
+  const day = (dt.getDate() +1+"").padStart(2,'0');
+
+  const hour = (dt.getHours() +1+"").padStart(2,'0');
+  const minute = (dt.getMinutes() +1+"").padStart(2,'0');
+  const second = (dt.getSeconds() +1+"").padStart(2,'0');
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+});
+
 new Vue({
   router,
   render: h => h(App)

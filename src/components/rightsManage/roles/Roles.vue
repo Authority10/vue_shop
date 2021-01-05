@@ -105,36 +105,7 @@
         this.roleList =res.data
       },
       //根据Id删除对应的权限
-      async removeRightById(role,rightId){
-        //弹框提示是否删除
-        const confirmResult = await this.$confirm(
-            '此操作将永久删除该用户的指定权限, 是否继续?',
-            '提示',
-            {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            })
-            .catch(err => err );
-            //判断用户点击'确认'或者'取消'
-            if(confirmResult!=='confirm'){
-              return this.$message.info('已取消删除')
-            }
-            //点击'确认'，向服务器发送删除请求
-            const {data:res} = await  this.$http.delete('roles/' + role.id + '/rights/'+ rightId);
-            //删除失败的提示
-            if(res.meta.status!==200){
-              return this.$message.error('删除权限失败')
-            }
-            // console.log(res);
-            // this.roleList = res.data
-            // 删除成功之后需要重新获取最新角色列表
-            // 这里不需要重新发起getRoleList请求，因为上方的删除请求会直接返回删除后的最新数据
-            // this.getRoleList()
-            // 虽然role是形参但是可以指向同一个内存地址？数据流双向绑定
-            // 将返回的最新权限重新赋值给角色
-            role.children =res.data
-      },
+
       //点击'分配权限'弹出对话框
       async showSetRightsDialog(role){
         //向服务器发起请求获取所有的树形权限列表

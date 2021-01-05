@@ -16,7 +16,7 @@
     </el-row>
     <!--用户列表区域-->
     <el-table
-            :data="userlist"
+            :data="userList"
             style="width: 100%"
             border
             stripe>
@@ -75,7 +75,7 @@
           pagesize:2
         },
         //用户列表
-        userlist:[],
+        userList:[],
         //用户数量总数
         total:0,
         //控制添加用户的弹出框是否隐藏
@@ -99,7 +99,7 @@
         if(res.meta.status!==200){
           return this.$message.error(res.meta.msg)
         }
-        this.userlist = res.data.users;
+        this.userList = res.data.users;
         this.total = res.data.total;
       },
       //监听每页显示多少(pagesize)的变化
