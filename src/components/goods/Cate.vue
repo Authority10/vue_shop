@@ -65,7 +65,7 @@
         <el-button type="primary" @click="addCate">确 定</el-button>
       </span>
     </el-dialog>
-    <!--'添加分类'的弹出框-->
+    <!--'编辑分类'的弹出框-->
     <el-dialog
             title="编辑分类"
             :visible.sync="editDialogVisible"

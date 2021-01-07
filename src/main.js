@@ -25,9 +25,10 @@ Vue.config.productionTip = false;
 Vue.component('tree-table',TreeTable)
 
 //全局过滤器
-Vue.filter('dataFormat',function (originValue) {
+//格式化时间戳
+Vue.filter('dateFormat',function (originValue) {
   const dt = new Date(originValue);
-
+  // console.log(dt);
   const year = dt.getFullYear();
   const month = (dt.getMonth() +1+"").padStart(2,'0');
   const day = (dt.getDate() +1+"").padStart(2,'0');
