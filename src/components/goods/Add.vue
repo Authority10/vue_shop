@@ -61,16 +61,38 @@
              <el-input v-model="item.attr_vals"></el-input>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label="商品图片" name="3">
+            <el-upload
+                    class="upload-demo"
+                    :action="uploadUrl"
+                    :on-preview="handlePreview"
+                    :on-remove="handleRemove"
+                    :on-success="handleSuccess"
+                    :headers="headerObj"
+                    list-type="picture">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+          </el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <quill-editor v-model="addForm.goods_introduce"></quill-editor>
+            <el-button type="primary" class="addBtn" @click="addGood">添加商品</el-button>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
-
+    <el-dialog
+            title="图片预览"
+            :visible.sync="previewVisible"
+            width="50%"
+            >
+      <img :src="previewPath" alt="" class="previewImg">
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash'
   import UsersBreadcrumb from "../user/childComps/userBasic/UsersBreadcrumb";
   export default {
     name: "Add",
@@ -89,6 +111,12 @@
           goods_weight:0,
           //级联选择器的节点双向绑定
           goods_cat:[],
+          //图片数组
+          pics:[],
+          //商品介绍（富文本）
+          goods_introduce:'',
+          //静态属性和动态属性
+          attrs:[],
         },
         //表单验证规则
         addFormRules: {
@@ -127,12 +155,23 @@
         manyTableData:[],
         //静态参数列表数据
         onlyTableData:[],
+        //上传图片的URL地址
+        uploadUrl:'http://127.0.0.1:8888/api/private/v1/upload',
+        //图片上传请求头
+        headerObj:{
+          Authorization:window.sessionStorage.getItem('token')
+        },
+        //预览图片地址
+        previewPath:'',
+        //是否放大图片预览
+        previewVisible:false
       }
     },
     created() {
       this.getCateList()
     },
     computed:{
+      //获取当前选中的三级分类的id
       cateId(){
         if(this.addForm.goods_cat.length===3){
           return this.addForm.goods_cat[2]
@@ -166,6 +205,7 @@
           this.onlyTableData = res.data
         }
       },
+
       //获取下拉栏的商品分类数据
       async getCateList(){
         const {data:res} = await this.$http.get('categories');
@@ -175,18 +215,98 @@
         }
         this.cateList = res.data;
       },
+
       //级联选择器选择事件
       parentCateChanged(){
         if(this.addForm.goods_cat.length!==3){
           this.addForm.goods_cat = []
         }
       },
+
       //左侧导航栏切换标签之前的钩子
       beforeTabLeave(activeName,oldActiveName){
        if(oldActiveName ==='0' && this.addForm.goods_cat.length!==3){
          this.$message.error('请选择商品分类');
          return false
        }
+      },
+
+      //处理图片预览效果
+      handlePreview(file){
+        // console.log(file)
+        //打开图片预览
+        this.previewVisible = true;
+        //图片预览中的图片url来自图片上传之后返回的url地址
+        this.previewPath = file.response.data.url
+      },
+
+      //处理删除图片
+      handleRemove(file){
+        // console.log(file)
+        //获取被删除图片的信息
+        const filePath = file.response.data.tmp_path;
+        //根据图片信息中的临时路径找到数组中的对应索引
+        const i =  this.addForm.pics.findIndex(item => item.pic === filePath);
+        //删除数组中该条图片信息
+        this.addForm.pics.splice(i,1);
+        console.log(this.addForm)
+      },
+
+      //图片上传成功的钩子函数
+      handleSuccess(res){
+        // console.log(res);
+        //拼接一个图片对象
+        const picInfo = {pic:res.data.tmp_path};
+        //将图片对象放入到表单绑定数据中的pics数组
+        this.addForm.pics.push(picInfo)
+      },
+
+      //添加商品的按钮
+      addGood(){
+        // console.log(this.addForm)
+        // 表单验证
+        this.$refs.addFormRef.validate(async (valid)=>{
+          if(!valid){
+            return this.$message.error('请填写必要的表单项目')
+          }
+
+          //利用lodash进行深拷贝
+          const form = _.cloneDeep(this.addForm);
+          form.goods_cat =  form.goods_cat.join(',');
+
+          //处理动态参数
+          this.manyTableData.forEach(item=>{
+            const newInfo = {
+              attr_id:item.attr_id,
+              attr_value:item.attr_vals.join(',')
+            };
+            this.addForm.attrs.push(newInfo)
+          });
+
+          //处理动态参数
+          this.onlyTableData.forEach(item=>{
+            const newInfo = {
+              attr_id:item.attr_id,
+              attr_value:item.attr_vals
+            };
+            this.addForm.attrs.push(newInfo)
+          });
+
+          form.attrs = this.addForm.attrs;
+          console.log(form);
+          //携带表单数据进行请求
+          const {data:res} = await this.$http.post('goods',form);
+          console.log(res);
+          // 创建失败立即返回错误提示跳出函数
+          if(res.meta.status!==201){
+            return this.$message.error('添加商品失败')
+          }
+
+          //修改成功之后提示成功
+          this.$message.success('添加商品成功');
+          //路由跳转
+          this.$router.push('/goods')
+        })
       }
     }
   }
@@ -195,5 +315,11 @@
 <style lang="less" scoped>
   .el-checkbox {
    margin: 0 10px 0 0 !important;
+  }
+  .previewImg {
+    width: 100%;
+  }
+  .addBtn {
+    margin-top: 15px;
   }
 </style>

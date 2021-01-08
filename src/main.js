@@ -8,6 +8,12 @@ import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 // 导入第三方树形结构插件
 import TreeTable from 'vue-table-with-tree-grid'
+// 导入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+// 导入富文本对应的样式
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
 
 //导入网络请求模块axios
 import axios from 'axios'
@@ -22,7 +28,10 @@ Vue.prototype.$http = axios;
 
 
 Vue.config.productionTip = false;
-Vue.component('tree-table',TreeTable)
+//全局注册树形控件
+Vue.component('tree-table',TreeTable);
+//全局注册富文本编辑器
+Vue.use(VueQuillEditor);
 
 //全局过滤器
 //格式化时间戳
