@@ -153,6 +153,7 @@
         cateList:[],
         //级联选择器的节点双向绑定
         selectedKeys:[],
+        //测试
         //标签页默认选中第二栏
         activeName: 'many',
         //动态参数数据
