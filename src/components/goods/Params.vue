@@ -151,15 +151,6 @@
       return{
         //级联选择器渲染数据
         cateList:[],
-        //级联选择器的配置项
-        cascaderProps:{
-          expandTrigger: 'hover',
-          value:'cat_id',
-          label:'cat_name',
-          children:'children',
-          //可以单独只选中父级
-          checkStrictly:false
-        },
         //级联选择器的节点双向绑定
         selectedKeys:[],
         //标签页默认选中第二栏
